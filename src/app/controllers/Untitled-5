@@ -1,0 +1,29 @@
+{
+    "title" : "hello world",
+    "author" : "Joe",
+    "likes" : 3
+}
+
+{
+    "postTitle" : "my first post",
+    "comment" : "great read",
+    "likes" : 3
+},
+
+
+
+
+ from: "comments",
+let: { post_likes: "$likes", post_title: "$title"},
+pipeline: [
+    { $match:
+        { $expr:
+            { $and:
+                [
+                    { $gt: [ "$likes", "$$post_likes"] },
+                    { $eq: ["$$post_title", "$postTitle" ] }
+                ]
+            }
+        }
+    }
+],
